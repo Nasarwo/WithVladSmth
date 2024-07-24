@@ -1,37 +1,44 @@
 import express from "express";
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
 import mongoose from "mongoose";
 
-const PORT = 5050;
+import authRouter from "./router/AuthRouter.js";
 
 const app = express();
 
 //Middleware
+dotenv.config();
 app.use(express.json());
+// что ж я за долбаеб то такой
+const PORT = process.env.PORT;
+const DB_NAME = process.env.DB_NAME;
+const DB_PASS = process.env.DB_PASS;
+const DB_USER = process.env.DB_USER;
 
 //Routes
 app.get("/", (req, res) => {
   res.send("Bydlo" + ` PORT ${PORT}`);
 });
+app.use("/auth", authRouter);
 
-app.post("/auth/login", (req, res) => {
-  const token = jwt.sign(
-    {
-      email: req.body.email,
-      name: req.body.name,
-    },
-    "secret123"
-  );
+async function start() {
+  try {
+    await mongoose
+      .connect(
+        `mongodb+srv://${DB_USER}:${DB_PASS}@vladblogcluster.5do48az.mongodb.net/${DB_NAME}?retryWrites=true&w=majority&appName=VladBlogCluster`
+      )
+      .then(() => console.log("DB OKAY BRO"))
+      .catch((err) => console.log("DB ERROR", err));
 
-  res.status(200).json({
-    success: true,
-    huy: token,
-  });
-});
-
-app.listen(PORT, (err) => {
-  if (err) {
-    return console.log(err);
+    app.listen(PORT, (err) => {
+      if (err) {
+        return console.log(err);
+      }
+      console.log(`Server working on port ${PORT}`);
+    });
+  } catch (error) {
+    console.log(error);
   }
-  console.log(`Server working on port ${PORT}`);
-});
+}
+start();
