@@ -17,7 +17,7 @@ const DB_USER = process.env.DB_USER;
 
 //Routes
 app.get("/", (req, res) => {
-  res.send("Bydlo" + ` PORT ${PORT}`);
+  res.send("Ne BYDLO" + ` PORT ${PORT}`);
 });
 app.use("/auth", authRouter);
 
