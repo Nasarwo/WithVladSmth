@@ -20,6 +20,6 @@ export default (req, res, next) => {
     });
   }
 
-  res.send(token);
-  next();
+  // res.send(token);
+  // next();
 };
