@@ -1,14 +1,14 @@
 import { Router } from "express";
-import { registerValidator } from "../validations/AuthValidator.js";
+import { registerValidator, loginValidator } from "../Validations.js";
 import checkAuth from "../utils/checkAuth.js";
-import { login, register, getMe } from "../controllers/userController.js";
+import * as userController from "../controllers/userController.js";
 
 const router = Router();
 
-router.post("/login", login);
+router.post("/login", loginValidator, userController.login);
 
-router.post("/reg", registerValidator, register);
+router.post("/reg", registerValidator, userController.register);
 
-router.get("/me", checkAuth, getMe);
+router.get("/me", checkAuth, userController.getMe);
 
 export default router;

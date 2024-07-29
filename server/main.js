@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 
 import authRouter from "./router/AuthRouter.js";
+import postRouter from "./router/PostRouter.js";
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.get("/", (req, res) => {
   res.send("Ne BYDLO" + ` PORT ${PORT}`);
 });
 app.use("/auth", authRouter);
+app.use("/posts", postRouter);
 
 async function start() {
   try {
